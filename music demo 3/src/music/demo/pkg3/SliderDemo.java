@@ -59,11 +59,11 @@ public class SliderDemo extends JPanel
     private static final int tempo_MAX = 180;
     private static final int tempo_INIT = 70;    //initial frames per second
     public static int slidernum;
-
+  public static JFormattedTextField textField;
     int delay;
     Timer timer;
     boolean frozen = false;
-    JFormattedTextField textField;
+  
     JLabel picture;
 
     public SliderDemo() {
@@ -249,6 +249,10 @@ public class SliderDemo extends JPanel
             System.err.println("Couldn't find file: " + path);
             return null;
         }
+    }
+    public static String getTextFieldValue()
+    {
+        return textField.getText();
     }
     /**
      * Create the GUI and show it. For thread safety, this method should be

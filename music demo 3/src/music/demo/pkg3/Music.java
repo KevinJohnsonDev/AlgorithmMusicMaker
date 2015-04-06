@@ -5,6 +5,7 @@
 package music.demo.pkg3;
 
 import GUIInterface.FileChooser;
+import GUIInterface.MainPanel;
 import GUIInterface.SongButton;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -345,7 +346,15 @@ public class Music {
     }
 
     public Pattern createSongIgnoringTracks() {
-        String s = "T120 ";
+        String s="T120 ";
+        if(MainPanel.useTempo.isSelected())
+        {
+            s="T"+SliderDemo.getTextFieldValue() + " ";
+        }
+        else
+        {
+         s = "T120 ";
+        }
         actualTracksToMake = 0;
         Pattern song = new Pattern();
         song.add(s);
@@ -448,7 +457,16 @@ public class Music {
     }
 
     public Pattern createSongWithTracks() {
-        String s = MusicAnalysisContainer.getListOfTempos();
+        String s;
+                if(MainPanel.useTempo.isSelected())
+        {
+            s="T"+SliderDemo.getTextFieldValue() + " ";
+        }
+        else
+        {
+           s = MusicAnalysisContainer.getListOfTempos();
+        }
+      
         actualTracksToMake = MusicAnalysisContainer.getMIP().getNumberOfTracks();
         Pattern song = new Pattern();
         song.add(s);
@@ -479,7 +497,7 @@ public class Music {
     public String CreateTrackWithTracks(int trackNum) {
 
         StringBuilder track = new StringBuilder(1000); //initial size may grow
-        int totalNotesToCreate = 6; //arbitrary number
+        int totalNotesToCreate = 100; //arbitrary number
         ArrayList<String> instrumentList = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum);
         for (int numberOfInstruments = 0; numberOfInstruments < instrumentList.size(); numberOfInstruments++) {
             String instrument = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum).get(numberOfInstruments);
