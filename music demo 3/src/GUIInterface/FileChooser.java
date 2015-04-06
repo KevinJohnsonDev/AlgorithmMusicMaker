@@ -66,6 +66,8 @@ public class FileChooser extends JPanel
 
     private static Pattern selectedSong = null;
     private static File[] selectedFile = new File[10];
+
+
     private int instanceNumber;
     private static int instanceTracker;
     static private final String newline = "\n";
