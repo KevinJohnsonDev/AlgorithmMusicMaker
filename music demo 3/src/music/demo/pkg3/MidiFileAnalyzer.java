@@ -56,6 +56,8 @@ public class MidiFileAnalyzer {
             Player player = new Player();
             Pattern p = player.loadMidi(new File(fileName));
             MFA = new MusicStringCorrector(p.toString());
+                 
+
             this.musicString = MFA.getFormattedMusicString();
              MusicAnalysisContainer.setMIP(new metaInformationParser(fileName));
             
@@ -63,16 +65,19 @@ public class MidiFileAnalyzer {
         } catch (IOException | InvalidMidiDataException e) {
             System.out.println(e);
         }
+        //Get meta information such as tempo and instruments
+        InstrumentParser IP = new InstrumentParser(musicString);
         TempoContainer tc = new TempoContainer(musicString);
         //Second we scan the probability
         ListOfNotes LOM = new ListOfNotes(musicString);
         MidiNoteProbabilityAnalyzer Np = new MidiNoteProbabilityAnalyzer(this.musicString, LOM);
-        
+       
         Np.generateTableFromMusicString();
   
         //Third we get the percentages per track and percentage per voice of each note
         MidiNoteDurationAnalyzer MDA = new MidiNoteDurationAnalyzer(musicString, LOM);
         //Set up Container
+        MusicAnalysisContainer.setInstrumentNames(IP.getInstrumentNames());
         MusicAnalysisContainer.setListOfTempos(tc.getListOfTempos());
         MusicAnalysisContainer.setMidiToNotePercentages(Np.getMidiToNotePercentages());
         MusicAnalysisContainer.setMidiToNotePercentagesTotals(Np.getMidiToNotePercentagesTotals());

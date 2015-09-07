@@ -59,7 +59,7 @@ public class MidiNoteProbabilityAnalyzer {
 
     public void putCountOfInstancesOfNotesInTable(String musicString) {
         int voiceNum;
-        Pattern pattern = Pattern.compile("V(\\d+)\\s+([A-G]#?b?\\d+)");
+        Pattern pattern = Pattern.compile("V(\\d+)\\s+([A-G]#?b?d?\\d+)");
         Matcher matcher = pattern.matcher(musicString);
         while (matcher.find()) {
             voiceNum = Integer.parseInt(matcher.group(1));

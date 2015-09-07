@@ -41,7 +41,7 @@ public class DurationList {
     private final double Triplet_ThirtySecond_note;
     private final double[] Note_To_Durations;
 
-    private HashMap<String, Double> Duration_To_Value;
+    private HashMap<String, Double> Duration_To_Value; //note the keys in this and Duration_To_Abbreviation MUST match if you are adding a new abbreviation
     private static LinkedHashMap<String, String> Duration_To_Abbreviation;
     //  private int [] TotalDurations;
 
@@ -79,50 +79,51 @@ public class DurationList {
 
     public void populateDurationToValue() {
         Duration_To_Value = new HashMap<>();
-        Duration_To_Value.put("Double_Whole_note", Double_Whole_note);
-        Duration_To_Value.put("Whole_note", Whole_note);
-        Duration_To_Value.put("Half_note", Half_note);
-        Duration_To_Value.put("Quarternote", Quarternote);
-        Duration_To_Value.put("Eighth_note", Eighth_note);
-        Duration_To_Value.put("Sixteenth_note", Sixteenth_note);
-        Duration_To_Value.put("ThirtySecond_note", ThirtySecond_note);
+        Duration_To_Value.put("2", Double_Whole_note);
+        Duration_To_Value.put("1", Whole_note);
+        Duration_To_Value.put("1/2", Half_note);
+        Duration_To_Value.put("1/4", Quarternote);
+        Duration_To_Value.put("1/8", Eighth_note);
+        Duration_To_Value.put("1/16", Sixteenth_note);
+        Duration_To_Value.put("1/32", ThirtySecond_note);
 
-        Duration_To_Value.put("Dotted_Double_Whole_note", Dotted_Double_Whole_note);
-        Duration_To_Value.put("Dotted_Whole_note", Dotted_Whole_note);
-        Duration_To_Value.put("Dotted_Half_note", Dotted_Half_note);
-        Duration_To_Value.put("Dotted_quarter_note", Dotted_quarter_note);
-        Duration_To_Value.put("Dotted_Eighth_note", Dotted_Eighth_note);
-        Duration_To_Value.put("Dotted_sixteenth_note", Dotted_sixteenth_note);
-        Duration_To_Value.put("Dotted_ThirtySecond_note", Dotted_ThirtySecond_note);
+        Duration_To_Value.put("2(.)", Dotted_Double_Whole_note);
+        Duration_To_Value.put("1(.)", Dotted_Whole_note);
+        Duration_To_Value.put("1/2(.)", Dotted_Half_note);
+        Duration_To_Value.put("1/4(.)", Dotted_quarter_note);
+        Duration_To_Value.put("1/8(.)", Dotted_Eighth_note);
+        Duration_To_Value.put("1/16(.)", Dotted_sixteenth_note);
+        Duration_To_Value.put("1/32(.)", Dotted_ThirtySecond_note);
 
-        Duration_To_Value.put("Triplet_quarter_note", Triplet_quarter_note);
-        Duration_To_Value.put("Triplet_eighth_note", Triplet_eighth_note);
-        Duration_To_Value.put("Triplet_sixteenth_note", Triplet_sixteenth_note);
-        Duration_To_Value.put("Triplet_ThirtySecond_note", Triplet_ThirtySecond_note);
+        Duration_To_Value.put("1/4(3)", Triplet_quarter_note);
+        Duration_To_Value.put("1/8(3)", Triplet_eighth_note);
+        Duration_To_Value.put("1/16(3)", Triplet_sixteenth_note);
+        Duration_To_Value.put("1/32(3)", Triplet_ThirtySecond_note);
 
     }
+    
 
     public void populateDurationToAbbreviation() {
 
         Duration_To_Abbreviation = new LinkedHashMap<>();
-        Duration_To_Abbreviation.put("Triplet_ThirtySecond_note", "t*");
-        Duration_To_Abbreviation.put("ThirtySecond_note", "t");
-        Duration_To_Abbreviation.put("Dotted_ThirtySecond_note", "t.");
-        Duration_To_Abbreviation.put("Triplet_sixteenth_note", "s*");
-        Duration_To_Abbreviation.put("Sixteenth_note", "s");
-        Duration_To_Abbreviation.put("Dotted_sixteenth_note", "s.");
-        Duration_To_Abbreviation.put("Triplet_eighth_note", "i*");
-        Duration_To_Abbreviation.put("Eighth_note", "i");
-        Duration_To_Abbreviation.put("Dotted_Eighth_note", "i.");
-        Duration_To_Abbreviation.put("Triplet_quarter_note", "q*");
-        Duration_To_Abbreviation.put("Quarternote", "q");
-        Duration_To_Abbreviation.put("Dotted_quarter_note", "q.");
-        Duration_To_Abbreviation.put("Half_note", "h");
-        Duration_To_Abbreviation.put("Dotted_Half_note", "h.");
-        Duration_To_Abbreviation.put("Whole_note", "w");
-        Duration_To_Abbreviation.put("Dotted_Whole_note", "w.");
-        Duration_To_Abbreviation.put("Double_Whole_note", "ww");
-        Duration_To_Abbreviation.put("Dotted_Double_Whole_note", "ww.");
+        Duration_To_Abbreviation.put("1/32(3)", "t*");
+        Duration_To_Abbreviation.put("1/32", "t");
+        Duration_To_Abbreviation.put("1/32(.)", "t.");
+        Duration_To_Abbreviation.put("1/16(3)", "s*");
+        Duration_To_Abbreviation.put("1/16", "s");
+        Duration_To_Abbreviation.put("1/16(.)", "s.");
+        Duration_To_Abbreviation.put("1/8(3)", "i*");
+        Duration_To_Abbreviation.put("1/8", "i");
+        Duration_To_Abbreviation.put("1/8(.)", "i.");
+        Duration_To_Abbreviation.put("1/4(3)", "q*");
+        Duration_To_Abbreviation.put("1/4", "q");
+        Duration_To_Abbreviation.put("1/4(.)", "q.");
+        Duration_To_Abbreviation.put("1/2", "h");
+        Duration_To_Abbreviation.put("1/2(.)", "h.");
+        Duration_To_Abbreviation.put("1", "w");
+        Duration_To_Abbreviation.put("1(.)", "w.");
+        Duration_To_Abbreviation.put("2", "ww");
+        Duration_To_Abbreviation.put("2(.)", "ww.");
 
     }
 

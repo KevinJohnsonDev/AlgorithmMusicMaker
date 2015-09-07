@@ -14,6 +14,8 @@ import java.util.NavigableMap;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.jfugue.Pattern;
 
 /**
@@ -346,14 +348,11 @@ public class Music {
     }
 
     public Pattern createSongIgnoringTracks() {
-        String s="T120 ";
-        if(MainPanel.useTempo.isSelected())
-        {
-            s="T"+SliderDemo.getTextFieldValue() + " ";
-        }
-        else
-        {
-         s = "T120 ";
+        String s = "T120 ";
+        if (MainPanel.useTempo.isSelected()) {
+            s = "T" + SliderDemo.getTextFieldValue() + " ";
+        } else {
+            s = "T120 ";
         }
         actualTracksToMake = 0;
         Pattern song = new Pattern();
@@ -378,12 +377,13 @@ public class Music {
         if (MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(trackNum).isEmpty()) {
             return " ";
         }
-        ArrayList<String> instrumentList = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum);
+        //ArrayList<String> instrumentList = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum);
+        ArrayList<String> instrumentList = MusicAnalysisContainer.getInstrumentNames().get(trackNum);
         StringBuilder track = new StringBuilder(1000); //initial size may grow
         int totalNotesToCreate = 30; //arbitrary number
         String rests = "R";
         for (int numberOfInstruments = 0; numberOfInstruments < instrumentList.size(); numberOfInstruments++) {
-            String instrument = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum).get(numberOfInstruments);
+            String instrument = instrumentList.get(numberOfInstruments);
             track.append(" I[").append(instrument).append("] ");
             for (int noteNum = 0; noteNum < totalNotesToCreate; noteNum++) {
 
@@ -458,52 +458,66 @@ public class Music {
 
     public Pattern createSongWithTracks() {
         String s;
-                if(MainPanel.useTempo.isSelected())
-        {
-            s="T"+SliderDemo.getTextFieldValue() + " ";
+        if (MainPanel.useTempo.isSelected()) {
+            s = "T" + SliderDemo.getTextFieldValue() + " ";
+        } else {
+            s = MusicAnalysisContainer.getListOfTempos();
         }
-        else
-        {
-           s = MusicAnalysisContainer.getListOfTempos();
-        }
-      
+
+
         actualTracksToMake = MusicAnalysisContainer.getMIP().getNumberOfTracks();
         Pattern song = new Pattern();
         song.add(s);
 
         int trackTotal = MusicAnalysisContainer.getMIP().getNumberOfTracks();
         for (int actualTracks = 0; actualTracks < trackTotal; actualTracks++) {
-            if (MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(actualTracks).isEmpty() || MusicAnalysisContainer.getMIP().getInstrumentNames().get(actualTracks).isEmpty()) {
-                    actualTracksToMake--;
+            if (MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(actualTracks).isEmpty() || MusicAnalysisContainer.getInstrumentNames().get(actualTracks).isEmpty()) {
+                actualTracksToMake--;
             }
         }
-
-            for (int trackNum = 0; trackNum < trackTotal; trackNum++) {
-                if (trackNum == 5 || MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(trackNum).isEmpty() || MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum).isEmpty()) {
-                    continue;
-                }
-
-                s = CreateTrackWithTracks(trackNum) + " ";
-                StringTransFormer STF = new StringTransFormer(s);
-                s = STF.getConvertedMusicString();
-                song.add(s);
-
-            }
-            return song;
+        if(actualTracksToMake == 0)
+        {
+                JOptionPane.showMessageDialog(new JFrame(), "Error: All tracks that have notes do not have any instruments,\n this is due to the design of the midi file.\n "
+                        + "Logic Pro and Apple Logic 9 are well known causes for this, please try a different midi file", "Bad Format",
+                            JOptionPane.ERROR_MESSAGE);
         }
 
-    
+        for (int trackNum = 0; trackNum < trackTotal; trackNum++) {
+            if (trackNum == 3 || trackNum == 4 || trackNum == 15) {
+                continue;
+            } else if (MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(trackNum).isEmpty()) {
+                continue;
+            } else if (MusicAnalysisContainer.getInstrumentNames().get(trackNum).isEmpty()) {
+                continue;
+            }
+
+            s = CreateTrackWithTracks(trackNum) + " ";
+          
+            StringTransFormer STF = new StringTransFormer(s);
+            s = STF.getConvertedMusicString();
+            song.add(s);
+
+        }
+           System.out.println(s);
+        return song;
+    }
 
     public String CreateTrackWithTracks(int trackNum) {
 
         StringBuilder track = new StringBuilder(1000); //initial size may grow
         int totalNotesToCreate = 100; //arbitrary number
-        ArrayList<String> instrumentList = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum);
+        //ArrayList<String> instrumentList = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum);
+         ArrayList<String> instrumentList = MusicAnalysisContainer.getInstrumentNames().get(trackNum);
         for (int numberOfInstruments = 0; numberOfInstruments < instrumentList.size(); numberOfInstruments++) {
-            String instrument = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum).get(numberOfInstruments);
+      //      String instrument = MusicAnalysisContainer.getMIP().getInstrumentNames().get(trackNum).get(numberOfInstruments);
+            String instrument = MusicAnalysisContainer.getInstrumentNames().get(trackNum).get(numberOfInstruments);
+            if(instrument.equalsIgnoreCase("Sci-fi"))
+            {
+                continue;
+            }
             track.append(" I[").append(instrument).append("] ");
             for (int noteNum = 0; noteNum < totalNotesToCreate; noteNum++) {
-
+                
                 track.append(getRandomNoteWithTracks(trackNum));
             }
         }
@@ -519,6 +533,7 @@ public class Music {
         int randNumber = rand.nextInt(101); //random number 1-100;
         double total = 0;
         int index = 0;
+
         String[] listOfKeys = MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(trackNumber).keySet().toArray(new String[MusicAnalysisContainer.getMidiToNotePercentagesTotals().get(trackNumber).size()]);
         while (total < randNumber && index < listOfKeys.length) {
             total += MusicAnalysisContainer.getMidiToNotePercentages().get(listOfKeys[index]);
@@ -530,27 +545,22 @@ public class Music {
 
         //After loop number is number be decrimented to be at right index
         note = listOfKeys[index];
-             if(actualTracksToMake > 1){
-        duration = getRandomDurationFromNoteWithTracks(note, trackNumber);
-             }
-             else
-             {
-             duration =   getRandomDurationFromNoteIgnoringTracks(note); 
-             }
-        if(actualTracksToMake > 1)
-        {
-        int restOrNote = rand.nextInt(actualTracksToMake);
-        if (restOrNote > actualTracksToMake/2) {
-            note = "R";
+        if (actualTracksToMake > 1) {
+            duration = getRandomDurationFromNoteWithTracks(note, trackNumber);
+        } else {
+            duration = getRandomDurationFromNoteIgnoringTracks(note);
         }
-        }
-        else
-        {
-              int restOrNote = rand.nextInt(8);
-                    if (restOrNote > 5)  //3/8th chance of rest
-                    {
-            note = "R";
-        }
+        if (actualTracksToMake > 1) {
+            int restOrNote = rand.nextInt(actualTracksToMake);
+            if (restOrNote > actualTracksToMake / 2) {
+                note = "R";
+            }
+        } else {
+            int restOrNote = rand.nextInt(8);
+            if (restOrNote > 5) //3/8th chance of rest
+            {
+                note = "R";
+            }
         }
 
         return note + "/" + duration + "a100 ";

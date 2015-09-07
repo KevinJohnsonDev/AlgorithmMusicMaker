@@ -53,6 +53,10 @@ public class MusicStringCorrector {
                 {
                      endIndex = Formatter.indexOf("a", startIndex);
                 }
+                else
+                {
+                        endIndex = Formatter.indexOf("d", startIndex);
+                }
             }
             else 
             {
