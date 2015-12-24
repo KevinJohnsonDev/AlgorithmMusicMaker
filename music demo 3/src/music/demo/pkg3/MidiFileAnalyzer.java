@@ -52,11 +52,13 @@ public class MidiFileAnalyzer {
     private void analyzeTrack() throws InvalidMidiDataException, IOException {
         //First we correct the String of Any errors
         MusicStringCorrector MFA = null;
+        MusicStringConverter MFA2 = null;
         try {
             Player player = new Player();
             Pattern p = player.loadMidi(new File(fileName));
             MFA = new MusicStringCorrector(p.toString());
-                 
+            MFA2 = new MusicStringConverter(p.toString());     
+            System.out.println("KEVIN JOHNSON \n");
 
             this.musicString = MFA.getFormattedMusicString();
              MusicAnalysisContainer.setMIP(new metaInformationParser(fileName));
