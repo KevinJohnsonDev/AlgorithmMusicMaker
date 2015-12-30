@@ -5,11 +5,12 @@
  */
 package music.demo.pkg3;
 
+import java.util.Comparator;
+
 /**
- *
- * @author Kevin
+TODO SORT TEMPOS IN MUSICSTRINGCONVERTER.JAVA based on BPM.
  */
-public class Tempo {
+public class Tempo implements Comparable<Tempo>  {
     
     private int time;
     private int bpm;
@@ -35,8 +36,23 @@ public class Tempo {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 29 * hash + this.bpm;
+        hash = 29 * hash + this.time * this.bpm;
         return hash;
     }
+
+    @Override
+    public int compareTo(Tempo tempo) {
+        int comparedSize = tempo.getTime();
+		if (this.time > comparedSize) {
+			return 1;
+		} else if (this.time == comparedSize) {
+			return 0;
+		} else {
+			return -1;
+		}
+    }
     
+
 }
+    
+

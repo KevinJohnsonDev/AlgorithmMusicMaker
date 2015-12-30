@@ -38,7 +38,7 @@ public class MusicStringCorrector {
         int end = s.indexOf(' ', start);
         return Integer.parseInt(s.substring(start + 1, end));
     }
-
+    //should probably be static, 
     //Rounds all note values to respective notes A MUSICSTRING MUST BE PASSED FROM JFUGIE MIDI FILE 
     private String FormatString(String s) {
         StringBuilder Formatter = new StringBuilder(s);
@@ -49,25 +49,11 @@ public class MusicStringCorrector {
             startIndex = Formatter.indexOf("/", startIndex) + 1; //every /
             if(Formatter.indexOf("a", startIndex) < Formatter.indexOf("d", startIndex) )
             {
-                if(Formatter.indexOf("a", startIndex) != -1)
-                {
-                     endIndex = Formatter.indexOf("a", startIndex);
-                }
-                else
-                {
-                        endIndex = Formatter.indexOf("d", startIndex);
-                }
+                endIndex = (Formatter.indexOf("a", startIndex) != -1)? Formatter.indexOf("a", startIndex) : Formatter.indexOf("d", startIndex);
             }
             else 
             {
-                if(Formatter.indexOf("d", startIndex) == -1)
-                {
-                    endIndex = Formatter.indexOf("a", startIndex);
-                }
-                else
-                {
-                     endIndex = Formatter.indexOf("d", startIndex);
-                }
+                endIndex = (Formatter.indexOf("d", startIndex) == -1)? Formatter.indexOf("a", startIndex):Formatter.indexOf("d", startIndex);
             }
             
 
@@ -79,7 +65,6 @@ public class MusicStringCorrector {
                 if (difference < roundToNote) {
                     roundToNote = difference;
                     noteToPick = Note_To_Durations[i];
-                  ;
                 }
             }
             if (endIndex != -1) {
@@ -100,6 +85,8 @@ public class MusicStringCorrector {
     public String getFormattedMusicString() {
         return FormattedMusicString;
     }
+    
+    
     @Override
 public String toString() {
   StringBuilder sb = new StringBuilder();

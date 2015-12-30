@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
  *
  * @author Kevin
  */
+//this entire class is probably the dumbest thing I have ever written. Just make a note object that has a string value and a duration jesus christ
+//OR BETTER YET AN ENUM was designed for this crap!
+//
 public class DurationList2 {
 
     private final int BPM;
