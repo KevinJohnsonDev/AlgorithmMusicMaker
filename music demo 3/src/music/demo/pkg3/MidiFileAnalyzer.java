@@ -52,33 +52,43 @@ public class MidiFileAnalyzer {
     private void analyzeTrack() throws InvalidMidiDataException, IOException {
         //First we correct the String of Any errors
         MusicStringCorrector MFA = null;
+        MusicStringConverter MFA2 = null;
         try {
             Player player = new Player();
             Pattern p = player.loadMidi(new File(fileName));
+
             MFA = new MusicStringCorrector(p.toString());
-            this.musicString = MFA.getFormattedMusicString();
+            musicString = MFA.getFormattedMusicString();
+            TempoParser TP = new TempoParser(p.toString());
+            MFA2 = new MusicStringConverter(musicString,TP.getListOfTempos(),TP.getDurationList());     
+            System.out.println("KEVIN JOHNSON \n");
+
+
              MusicAnalysisContainer.setMIP(new metaInformationParser(fileName));
             
 
         } catch (IOException | InvalidMidiDataException e) {
             System.out.println(e);
         }
-        TempoContainer tc = new TempoContainer(musicString);
+        //Get meta information such as tempo and instruments
+        InstrumentParser IP = new InstrumentParser(musicString);
+      //  TempoContainer tc = new TempoContainer(musicString);
         //Second we scan the probability
         ListOfNotes LOM = new ListOfNotes(musicString);
         MidiNoteProbabilityAnalyzer Np = new MidiNoteProbabilityAnalyzer(this.musicString, LOM);
-        
+       
         Np.generateTableFromMusicString();
   
         //Third we get the percentages per track and percentage per voice of each note
         MidiNoteDurationAnalyzer MDA = new MidiNoteDurationAnalyzer(musicString, LOM);
         //Set up Container
-        MusicAnalysisContainer.setListOfTempos(tc.getListOfTempos());
+        MusicAnalysisContainer.setInstrumentNames(IP.getInstrumentNames());
+   //     MusicAnalysisContainer.setListOfTempos(tc.getListOfTempos());
         MusicAnalysisContainer.setMidiToNotePercentages(Np.getMidiToNotePercentages());
         MusicAnalysisContainer.setMidiToNotePercentagesTotals(Np.getMidiToNotePercentagesTotals());
 
         MusicAnalysisContainer.setNoteToDurationsWithoutTracks(MDA.getNoteToDurationsWithoutTracks());
-        MusicAnalysisContainer.setNotesToDurationsWithTracks( MDA.getNotesToDurationsWithTracks());
+        MusicAnalysisContainer.setNotesToDurationsWithTracks(MDA.getNotesToDurationsWithTracks());
        
         MusicAnalysisContainer.setMusicString(musicString);
     }
@@ -87,10 +97,7 @@ public class MidiFileAnalyzer {
 
     
 
-    /**
-     *
-     * @param s
-     */
+
     public void setFileAdjustAllProperties(String s) throws InvalidMidiDataException, IOException {
         this.fileName = s;
         //deallocate for GC
@@ -98,49 +105,6 @@ public class MidiFileAnalyzer {
         System.out.println("Setting Done Beginning Analysis");
         analyzeTrack();
     }
-    
-    
-
-        //Provides a table of all the notes and sequences    
-//    private void analyzeTrack() throws InvalidMidiDataException, IOException {
-//        int trackNumber = 0;
-//        StringBuilder s = new StringBuilder(); // Might Need to Adjust Size later on.
-//        for (Track track : this.sequence.getTracks()) {
-//            trackNumber++;
-//         //  System.out.println("V" + trackNumber + ": size = " + track.size());
-//            // System.out.println();
-//            for (int i = 0; i < track.size(); i++) {
-//                MidiEvent event = track.get(i);
-//                System.out.print("@" + event.getTick() + " ");
-//
-//                MidiMessage message = event.getMessage();
-//                if (message instanceof ShortMessage) {
-//                    ShortMessage sm = (ShortMessage) message;
-//                    System.out.print("Channel: " + sm.getChannel() + " ");
-//
-//                    if (sm.getCommand() == NOTE_ON) {
-//                        int key = sm.getData1();
-//                        int octave = (key / 12) - 1;
-//                        int note = key % 12;
-//                        String noteName = NOTE_NAMES_SHARPS[note];
-//                        int velocity = sm.getData2();
-//                        System.out.println("Note on, " + noteName + octave + " key=" + key + " velocity: " + velocity);
-//                    } else if (sm.getCommand() == NOTE_OFF) {
-//                        int key = sm.getData1();
-//                        int octave = (key / 12) - 1;
-//                        int note = key % 12;
-//                        String noteName = NOTE_NAMES_SHARPS[note];
-//                        int velocity = sm.getData2();
-//                        System.out.println("Note off, " + noteName + octave + " key=" + key + " velocity: " + velocity);
-//                    } else {
-//                        System.out.println("Command:" + sm.getCommand());
-//                    }
-//                }
-//            }
-//  
-//        }
-//
-//    }
 
     public String getMusicString() {
         return musicString;
@@ -158,10 +122,3 @@ public class MidiFileAnalyzer {
         this.fileName = fileName;
     }
 }
-//Constructor Comments to put at bottom
-//{this.millisecondsPerBeat,this.millisecondsPerBeat*2};
-        /*debugging purposes
- System.out.println("resolution/PPQ:" + this.resolutionOfTrack);
- System.out.println("BPM:" + BPMOfTrack);
- System.out.println("Length of Song in ms:" + this.lengthOfTrack);
- */

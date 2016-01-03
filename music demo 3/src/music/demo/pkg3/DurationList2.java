@@ -8,13 +8,18 @@ package music.demo.pkg3;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author Kevin
  */
-public class DurationList {
+//this entire class is probably the dumbest thing I have ever written. Just make a note object that has a string value and a duration jesus christ
+//OR BETTER YET AN ENUM was designed for this crap!
+//
+public class DurationList2 {
 
     private final int BPM;
     //whole notes     7 
@@ -43,10 +48,11 @@ public class DurationList {
 
     private HashMap<String, Double> Duration_To_Value; //note the keys in this and Duration_To_Abbreviation MUST match if you are adding a new abbreviation
     private static LinkedHashMap<String, String> Duration_To_Abbreviation;
+    private Map<Double,String> Value_To_Duration;
     //  private int [] TotalDurations;
 
-    public DurationList(String musicString) {
-        this.BPM = getTempo(musicString);
+    public DurationList2(int Tempo) {
+        this.BPM = Tempo;
         this.Double_Whole_note = 480.0 / BPM;
         this.Whole_note = 240.0 / BPM;
         this.Half_note = 120.0 / BPM;
@@ -75,6 +81,7 @@ public class DurationList {
             Triplet_ThirtySecond_note, Triplet_sixteenth_note, Triplet_quarter_note, Triplet_eighth_note};
         populateDurationToValue();
         populateDurationToAbbreviation();
+        createValueDurationMap();
     }
 
     public void populateDurationToValue() {
@@ -127,11 +134,18 @@ public class DurationList {
 
     }
 
-    private int getTempo(String musicString) {
-        int start = musicString.indexOf('T');
-        int end = musicString.indexOf(' ', start);
-        return Integer.parseInt(musicString.substring(start + 1, end));
+    public void createValueDurationMap()
+    {
+        Value_To_Duration = Duration_To_Value.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
     }
+
+    public Map<Double,String> getValueDurationMap()
+    {
+        return Value_To_Duration;
+    }
+
 
     public double[] getNoteToDurations() {
         return Note_To_Durations;
@@ -154,6 +168,21 @@ public class DurationList {
 
     public HashMap<String, Double> getDuration_To_Value() {
         return Duration_To_Value;
+    }
+    @Override
+    public boolean equals(Object o){
+        return o instanceof DurationList2 && this.BPM == ((DurationList2)o).getBPM();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + this.BPM;
+        return hash;
+    }
+    public int getBPM()
+    {
+        return this.BPM;
     }
 
     public double getDoubleWholeNote() {

@@ -13,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -33,7 +34,7 @@ public class MainPanel {
     public static SongButton s1;
     public static SongButton s2;
     public static SongButton s3;
-
+    public static JCheckBox useTempo;
     public static void createAndShowGUI() {
         //Create and set up the window.
         filePicker = new FileChooser();
@@ -47,6 +48,7 @@ public class MainPanel {
         s1 = new SongButton();
         s2 = new SongButton();
         s3 = new SongButton();
+        useTempo = new JCheckBox("Use Tempo");
         JFrame main = new JFrame("Midi Music Mix Alpha ");
         JPanel frame = new JPanel();
         JPanel results = new JPanel(new GridBagLayout());
@@ -58,6 +60,7 @@ public class MainPanel {
         //Add content to the window.
         frame.add(filePicker, BorderLayout.NORTH);
         frame.add(animator, BorderLayout.NORTH);
+        frame.add(useTempo);
         frame.add(stopbutton, BorderLayout.CENTER);
         frame.add(playbutton, BorderLayout.CENTER);
         frame.add(repeatbutton, BorderLayout.CENTER);

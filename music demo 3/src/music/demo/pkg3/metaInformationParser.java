@@ -134,7 +134,7 @@ public final class metaInformationParser {
             for(String s : sample)
             {
             if (s != null) {
-                System.out.println(i+ " " + s);
+              //  System.out.println(i+ " " + s);
                 
             }
             }
