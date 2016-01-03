@@ -66,7 +66,7 @@ public class MidiNoteDurationAnalyzer {
         DurationList DL = new DurationList(musicString);
         double[] ArrayOfDurations = DL.getNoteToDurations();
         double highestDuration = getMaxDuration(ArrayOfDurations);
-        Pattern pattern = Pattern.compile("V\\d+\\s+([A-Ga-g]#?b?\\d+)/(\\d+.\\d+)");
+        Pattern pattern = Pattern.compile("V\\d+\\s+([A-Ga-g]#?b?d?\\d+)/(\\d+.\\d+)");
         Matcher matcher = pattern.matcher(musicString);
         while (matcher.find()) {
             boolean flag = false;

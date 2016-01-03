@@ -22,7 +22,7 @@ public class MusicAnalysisContainer {
     private static ArrayList<TreeMap<String, Double>> MidiToNotePercentagesTotals;// Percentages of Notes in each track
     private static TreeMap<String, Double> MidiToNotePercentages; // Raw Total percentages not taking tracks into account
     private static HashMap<String, String> MidiToNotePatterns; //used for pattern creation
-  
+    private static ArrayList<ArrayList<String>> instrumentNames;
     private static TreeMap<String, NoteDurationCount> NoteToDurationsWithoutTracks; //Duration Probability Given Note without tracks in mind
     private static ArrayList<TreeMap<String, NoteDurationCount>> NotesToDurationsWithTracks; //key is NOTE+DURATION Including Decimal probability 
     private static DurationList DL;
@@ -122,6 +122,15 @@ public class MusicAnalysisContainer {
     public static void setListOfTempos(String listOfTempos) {
         MusicAnalysisContainer.listOfTempos = listOfTempos;
     }
+
+    public static ArrayList<ArrayList<String>> getInstrumentNames() {
+        return instrumentNames;
+    }
+
+    public static void setInstrumentNames(ArrayList<ArrayList<String>> instrumentNames) {
+        MusicAnalysisContainer.instrumentNames = instrumentNames;
+    }
+    
     
     
     
